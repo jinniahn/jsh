@@ -10,12 +10,11 @@ setup(
     license = "MIT",
     keywords = "shell, util",
     url = "https://github.com/jinniahn/jsh",
-    packages=['curl_parser'],
+    packages=['jsh'],
     install_requires=[
         'jsh',
     ],    
     classifiers=[
-        "Topic :: Utilities",
-        "Topic :: Networks"
+        "Topic :: Utilities"
     ]
 )

@@ -41,6 +41,9 @@ import time
 from tempfile import NamedTemporaryFile
 from pexpect import TIMEOUT, spawn, EOF
 
+class ShellRunException(Exception):
+    pass
+
 
 __all__ = ['sh', 'sudo_sh', 'ssh_sh']
 
@@ -96,6 +99,9 @@ def s(cmd, encoding='utf-8', logfile=sys.stdout, env=None, cwd=None):
     # close pipe
     p.stderr.close()
     p.stdout.close()
+
+    if p.returncode != 0:
+        raise ShellRunException()
     
     return ''.join(ret)
 

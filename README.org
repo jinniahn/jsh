@@ -1,0 +1,19 @@
+* WHAT 
+
+  - This util api to run shell command
+
+  
+* USAGE
+
+  You can run any bash script using sh api.
+
+  #+begin_src python :results output replace :exports both
+   from jsh import sh
+   print(sh('ls /'))
+  #+end_src
+
+
+  
+
+
+

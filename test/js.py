@@ -69,6 +69,8 @@ class TestShell(unittest.TestCase):
         ret = ssh_sh('pwd', 'localhost', logfile=None, cwd=cwd).strip()
         self.assertEqual('/usr', ret)
 
+
+    @unittest.skip('not implemented')
     def test_ssh_exit_code(self):
         with self.assertRaises(ShellRunException):
             ret = sudo_sh('wrong_cmd','jinni' , logfile=None)

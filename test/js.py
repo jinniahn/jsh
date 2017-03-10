@@ -64,18 +64,21 @@ class TestShell(unittest.TestCase):
         self.assertEqual(ret, 'sudo: 3 incorrect password attempts')
 
 
-    @unittest.skip('')
     def test_ssh_cwd(self):
         cwd = '/usr'
         ret = ssh_sh('pwd', 'localhost', logfile=None, cwd=cwd).strip()
         self.assertEqual('/usr', ret)
 
+    def test_ssh_exit_code(self):
+        with self.assertRaises(ShellRunException):
+            ret = sudo_sh('wrong_cmd','jinni' , logfile=None)
+            print(ret)
+        
     def test_exit_code(self):
         with self.assertRaises(ShellRunException):
             ret = sh('wrong_cmd', logfile=None)
             print(ret)
 
-        print('xx');
         with self.assertRaises(ShellRunException):
             ret = ssh_sh('wrong_cmd', 'localhost', logfile=sys.stdout).strip()
             print(ret)

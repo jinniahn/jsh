@@ -42,8 +42,9 @@ from tempfile import NamedTemporaryFile
 from pexpect import TIMEOUT, spawn, EOF
 
 class ShellRunException(Exception):
-    pass
-
+    def __init__(self, log):
+        Exception.__init__(self)
+        self.log = log
 
 __all__ = ['sh', 'sudo_sh', 'ssh_sh']
 
@@ -84,6 +85,7 @@ def s(cmd, encoding='utf-8', logfile=sys.stdout, env=None, cwd=None):
         if data:
             data = data.decode(encoding)
             if logfile:
+                print(data)
                 logfile.write(data)
             # add to buffer
             ret.append(data)
@@ -101,7 +103,7 @@ def s(cmd, encoding='utf-8', logfile=sys.stdout, env=None, cwd=None):
     p.stdout.close()
 
     if p.returncode != 0:
-        raise ShellRunException()
+        raise ShellRunException(''.join(ret))
     
     return ''.join(ret)
 
@@ -246,7 +248,7 @@ def ssh_sh(cmd, remote_server, env=None, cwd=None, logfile=default_logfile, inpu
         with NamedTemporaryFile('w', encoding="utf-8", delete=True) as f:
             #os.chmod(f.name, 0o777)
             # create ssh command script
-            ssh_script_cmd = 'cat {} | ssh {} "f=\`mktemp\`; cat >> \$f; bash -login \$f;"'.format(cmd_file, remote_server)
+            ssh_script_cmd = 'cat {} | ssh {} "f=\`mktemp\`; cat >> \$f; bash -login \$f; "'.format(cmd_file, remote_server)
             #print(ssh_script_cmd)
             f.write(ssh_script_cmd)
             f.flush()

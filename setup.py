@@ -12,7 +12,7 @@ setup(
     url = "https://github.com/jinniahn/jsh",
     packages=['jsh'],
     install_requires=[
-        'jsh',
+        'pexpect',
     ],    
     classifiers=[
         "Topic :: Utilities"

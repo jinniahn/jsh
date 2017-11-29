@@ -85,7 +85,6 @@ def s(cmd, encoding='utf-8', logfile=sys.stdout, env=None, cwd=None):
         if data:
             data = data.decode(encoding)
             if logfile:
-                print(data)
                 logfile.write(data)
             # add to buffer
             ret.append(data)
@@ -101,6 +100,8 @@ def s(cmd, encoding='utf-8', logfile=sys.stdout, env=None, cwd=None):
     # close pipe
     p.stderr.close()
     p.stdout.close()
+
+    logfile.close()
 
     if p.returncode != 0:
         raise ShellRunException(''.join(ret))

@@ -101,7 +101,8 @@ def s(cmd, encoding='utf-8', logfile=sys.stdout, env=None, cwd=None):
     p.stderr.close()
     p.stdout.close()
 
-    logfile.close()
+    if logfile:
+        logfile.close()
 
     if p.returncode != 0:
         raise ShellRunException(''.join(ret))

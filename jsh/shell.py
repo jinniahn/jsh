@@ -101,7 +101,7 @@ def s(cmd, encoding='utf-8', logfile=sys.stdout, env=None, cwd=None):
     p.stderr.close()
     p.stdout.close()
 
-    if logfile:
+    if logfile and logfile is not sys.stdout:
         logfile.close()
 
     if p.returncode != 0:

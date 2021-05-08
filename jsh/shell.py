@@ -144,9 +144,6 @@ def _run_cmd(cmd, args=[], logfile=sys.stdout, input_events=[], cwd=None, env=No
     if isinstance(events, list):
         patterns= [x for x,y in events]
         responses = [y for x,y in events]
-    elif isinstance(events, dict):
-        patterns = list(events.keys())
-        responses = list(events.values())
     else:
         # This assumes EOF or TIMEOUT will eventually cause run to terminate.
         patterns = None
@@ -210,13 +207,16 @@ def _run_cmd(cmd, args=[], logfile=sys.stdout, input_events=[], cwd=None, env=No
     child.close()
     return child_result    
 
-def sh(cmd, env=None, cwd=None, logfile=default_logfile, input_events=[], interactive=False):
+def sh(cmd, env=None, cwd=None, logfile=default_logfile, input_events=[], interactive=False, noshell=False):
     with NamedTemporaryFile('w', encoding="utf-8") as f:
         f.write(cmd)
         f.flush()
 
         if not input_events and not interactive:
-            return s(['bash', f.name], env = env, cwd=cwd, logfile=logfile)
+            if logfile == None:
+                return subprocess.check_output(cmd, env = env, cwd=cwd, shell=not noshell).decode('utf8')
+            else:
+                return s(['bash', f.name], env = env, cwd=cwd, logfile=logfile)
         else:
             return _run_cmd(cmd='bash', args = [f.name], env = env, cwd=cwd
                             , logfile = logfile, input_events= input_events
